@@ -19,6 +19,7 @@
     prometheus --version
     mv prometheus.yml /etc/prometheus/prometheus.yml
     tee /etc/systemd/system/prometheus.service<<EOF
+---
 [Unit]
 Description=Prometheus
 Documentation=https://prometheus.io/docs/introduction/overview/
@@ -44,10 +45,11 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 EOF
+---
     chown -R prometheus:prometheus /etc/prometheus
     chown -R prometheus:prometheus /etc/prometheus/*
-    chown -R 775 /etc/prometheus
-    chown -R 775 /etc/prometheus/*
+    chmod -R 775 /etc/prometheus
+    chmod -R 775 /etc/prometheus/*
     chown -R prometheus:prometheus /var/lib/prometheus
     systemctl daemon-reload
     systemctl start prometheus
