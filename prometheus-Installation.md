@@ -5,17 +5,17 @@
 ```
     sudo su
     apt update && apt upgrade -y
-    groupadd --system promethus
-    useradd -s /sbin/nologin --system -g promethus promethus
-    mkdir /var/lib/promethus
-    mkdir /etc/promethus/rules
-    mkdir /etc/promethus/rules.s
-    mkdir /etc/promethus/files_sd
+    groupadd --system prometheus
+    useradd --system --no-create-home --shell /sbin/nologin --gid prometheus prometheus
+    mkdir /var/lib/prometheus
+    mkdir -p /etc/prometheus/rules
+    mkdir /etc/prometheus/rules.s
+    mkdir /etc/prometheus/files_sd
     wget https://github.com/prometheus/prometheus/releases/download/v2.53.4/prometheus-2.53.4.linux-amd64.tar.gz
-    tar xvzf https://github.com/prometheus/prometheus/releases/download/v2.53.4/prometheus-2.53.4.linux-amd64.tar.gz
+    tar xvf prometheus-2.53.4.linux-amd64.tar.gz
     cd prometheus-2.53.4.linux-amd64
     ls
-    mv promethus promtool /usr/local/bin/
+    mv prometheus promtool /usr/local/bin
     prometheus --version
     mv prometheus.yml /etc/prometheus/prometheus.yml
     tee /etc/systemd/system/prometheus.service<<EOF

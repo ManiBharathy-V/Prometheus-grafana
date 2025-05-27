@@ -9,16 +9,14 @@ Go to https://prometheus.io/download/ page now select Operating system and Archi
     ./node_exporter     #now this run Node_exporter as binary file expoter
     #look for >> "Listing on" address=:9100
     #this port will be node exporter port
-#to run Node_exporter as Service
-    groupadd --system prometheus
-    useradd -s /sbin/nologin --system -g prometheus prometheus
+    #to run Node_exporter as Service
     mkdir /var/lib/node/
     ls
     mv node_exporter /var/lib/node/ 
-    vi /etc/systemd/system/node.services
+    vi /etc/systemd/system/node_exporter.service
 ---
 [Unit]
-Description=Prometheus Node Exporter
+Description=Node Exporter
 Documentation=https://prometheus.io/docs/introduction/overview/
 Wants=network-online.target
 After=network-online.target
@@ -41,9 +39,9 @@ WantedBy=multi-user.target
     chmod -R 775 /etc/prometheus
     chmod -R 775 /etc/prometheus/*
     systemctl daemon-reload
-    systemctl start node
-    systemctl enable node
-    systemctl status node
+    systemctl start node_exporter
+    systemctl enable node_exporter
+    systemctl status node_exporter
 
 ```
 

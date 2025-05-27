@@ -31,3 +31,12 @@ systemctl stop grafana-server
 systemctl start grafana-server
 systemctl status grafana-server
 ```
+Login to Grafana http://<host-ip\>:3000 <br/>
+
+goto connection > data Sources > Add new Data source
+
+* Select Prometheus
+* Mention your Prometheus server URL
+* Add Authentication if needed
+* keep Manage alerts via Alerting UI under Altering ON
+* Keep HTTP method > POST (recommended)
