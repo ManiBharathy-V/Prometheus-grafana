@@ -1,25 +1,29 @@
 # Grafana Installation
 
 Go to https://grafana.com/grafana/download and selete your system type 
-``` 
+### Download and unpack
+```
 sudo su
 apt update && apt upgrade -y
 apt-get install -y adduser libfontconfig1 musl
 wget https://dl.grafana.com/oss/release/grafana_12.0.0_arm64.deb
 dpkg -i grafana_12.0.0_arm64.deb
+```
+### Reload systemd and Start graafana
+```
 systemctl daemon-reload
 systemctl start grafana-server
 systemctl enable grafana-server
 systemctl status grafana-server
 ```
-
+### Check grafana web console
 Check web http://<host-ip\>:3000 <br/>
 you will be greated with grafana login page<br/>
 default login credential<br/>
 >username: admin <br/>
 >password: admin <br/>
 
-## Config Grafana
+### Config Grafana
 
 ```
 cd /etc/grafana
@@ -31,6 +35,7 @@ systemctl stop grafana-server
 systemctl start grafana-server
 systemctl status grafana-server
 ```
+### add data source
 Login to Grafana http://<host-ip\>:3000 <br/>
 
 goto connection > data Sources > Add new Data source
