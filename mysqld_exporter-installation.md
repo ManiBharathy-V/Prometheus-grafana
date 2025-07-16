@@ -89,7 +89,10 @@ systemctl start mysql_exporter
 systemctl enable mysql_exporter
 systemctl status mysql_exporter
 ```
-
+### Verify Mysql Exporter is Running
+```
+curl http://localhost:9104/metrics
+```
 ###  Configure MySQL endpoint - on Prometheus server
 ```
 vi /etc/prometheus/prometheus.yml
