@@ -102,3 +102,9 @@ scrape_configs:
         labels:
           alias: test-db
 ```
+### Reload systemd and Start prometheus
+```
+systemctl daemon-reload
+systemctl restart prometheus
+systemctl status prometheus
+```   
