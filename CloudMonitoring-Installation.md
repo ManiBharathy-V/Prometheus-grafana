@@ -5,28 +5,28 @@
 # Prometheus Installation
 go to https://prometheus.io/download/ page now select Operating system and Architecture then copy the link address of (prometheus-xxxxxxxxxx.tar.gz)
 
-Create a System User for Prometheus
+### Create a System User for Prometheus
 ```
 sudo su
 groupadd --system prometheus
 useradd --system --no-create-home --shell /sbin/nologin --gid prometheus prometheus
 ```
-Create Directories for Prometheus
+### Create Directories for Prometheus
 ```
 mkdir /var/lib/Prometheus
 ```
-Download Prometheus and Extract Files
+###  Download Prometheus and Extract Files
 ```
 wget https://github.com/prometheus/prometheus/releases/download/v2.53.4/prometheus-2.53.4.linux-amd64.tar.gz
 tar xvf prometheus-2.53.4.linux-amd64.tar.gz
 ```
-Move the Binary Files and Configuration Files
+###  Move the Binary Files and Configuration Files
 ```
 cd prometheus-2.53.4.linux-amd64
 mv prometheus promtool /usr/local/bin
 mv consoles console_libraries prometheus.yml /etc/Prometheus
 ```
-Create Prometheus Systemd Service
+### Create Prometheus Systemd Service
 ```
 vi /etc/systemd/system/prometheus.service
 ```
@@ -57,7 +57,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 ```
-Give ownership and perminssion
+### Give ownership and perminssion
 ```
 chown -R prometheus:prometheus /etc/prometheus
 chown -R prometheus:prometheus /etc/prometheus/*
@@ -68,25 +68,25 @@ chmod -R 775 /etc/prometheus
 chmod -R 775 /etc/prometheus/*
 prometheus –version
 ```
-Reload systemd and Start prometheus
+### Reload systemd and Start prometheus
 ```
 systemctl daemon-reload
 systemctl start prometheus
 systemctl enable prometheus
 systemctl status prometheus
 ```
-Check Prometheus web console
+### Check Prometheus web console
 
 With Prometheus running successfully, you can access it via your web browser using http://<host-ip\>:9090 or <ip_address>:9090
 
 # Grafana Installation
-Download and unpack
+### Download and unpack
 ```
 apt-get install -y adduser libfontconfig1 musl
 wget https://dl.grafana.com/oss/release/grafana_12.0.0_arm64.deb
 dpkg -i grafana_12.0.0_arm64.deb
 ```
-Reload systemd and Start graafana
+### Reload systemd and Start graafana
 ```
 systemctl daemon-reload
 systemctl start grafana-server
@@ -101,7 +101,6 @@ default login credential<br/>
 >password: admin <br/>
 
 ### Config Grafana
-
 ```
 cd /etc/grafana
 ls
@@ -124,7 +123,7 @@ goto connection > data Sources > Add new Data source
 * Keep HTTP method > POST (recommended)
 
 # Grafana Loki Installation
-Loki installation on Monitoring server
+### Loki installation on Monitoring server
 ```
 apt-get update
 apt-get install loki
@@ -133,7 +132,7 @@ systemctl start loki
 systemctl enable loki
 systemctl status loki
 ```
-Check Loki is receiving logs
+### Check Loki is receiving logs
 ```
 curl http://localhost:3100/metrics
 curl -G http://localhost:3100/loki/api/v1/labels
@@ -145,12 +144,12 @@ Install Node Exporter if you want to collect hardware-level metrics (CPU, memory
 
 Go to https://prometheus.io/download/ page now select your Operating system and Architecture then copy the link address of node_exporter(node_exporter-xxxxxxx.tar.gz) 
 
-Update & Upgrade and Create User
+### Update & Upgrade and Create User
 ```
 groupadd --system prometheus
 useradd --system --no-create-home --shell /sbin/nologin --gid prometheus prometheus
 ```
-Download and unpack node_exporter
+### Download and unpack node_exporter
 ```
 wget https://github.com/prometheus/node_exporter/releases/download/v1.9.1/node_exporter-1.9.1.linux-amd64.tar.gz
 tar xvf node_exporter-1.9.1.linux-amd64.tar.gz
@@ -160,7 +159,7 @@ mkdir /var/lib/node/
 ls
 mv node_exporter /var/lib/node/
 ```
-Create node-exporter Systemd Service
+### Create node-exporter Systemd Service
 ```
 vi /etc/systemd/system/node_exporter.service
 ```
@@ -183,23 +182,23 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 ```
-Give ownership and perminssion
+### Give ownership and perminssion
 ```
 chown -R prometheus:prometheus /var/lib/node
 chown -R prometheus:prometheus /var/lib/node/*
 ```
-Reload systemd and Start Node Exporter
+### Reload systemd and Start Node Exporter
 ```
 systemctl daemon-reload
 systemctl start node_exporter
 systemctl enable node_exporter
 systemctl status node_exporter
 ```
-Verify Node Exporter is Running
+### Verify Node Exporter is Running
 ```
 curl http://localhost:9100/metrics
 ```
-Clean Up
+### Clean Up
 ```
 cd ..
 rm -rf node_exporter-1.9.1.linux-amd64.tar.gz node_exporter-1.9.1.linux-amd64
@@ -221,14 +220,14 @@ scrape_configs:
   - targets: ['<host-ip>:9100']
   - targets: ['<VM's-ip>:9100']
 ```
-Reload services
+### Reload services
 ```
 systemctl daemon-reload
 systemctl stop prometheus
 systemctl start prometheus
 systemctl status prometheus
 ```
-Check Prometheus web console
+### Check Prometheus web console
 
 > http://<prometheus-vm-ip\>:9090/targets
 
@@ -237,12 +236,12 @@ Check for your endpoint and status of it.
 # Libvirt Exporter Installation
 Install Libvirt exporter on host which have hypervisor, and when we dont have permission to access the vm 
 
-Update & Upgrade and Create User
+### Create User
 ```
 groupadd --system prometheus
 useradd --system --no-create-home --shell /sbin/nologin --gid prometheus prometheus
 ```
-Download and unpack Libvirt exporter
+### Download and unpack Libvirt exporter
 ```
 apt install -y git make golang libvirt-dev
 wget https://github.com/Tinkoff/libvirt-exporter/archive/refs/tags/2.3.3.tar.gz
@@ -251,7 +250,7 @@ cd libvirt-exporter-2.3.3
 go build -o libvirt-exporter .
 mv libvirt-exporter /usr/local/bin/
 ```
-Create Libvirt-exporter Systemd Service
+### Create Libvirt-exporter Systemd Service
 ```
 vi /etc/systemd/system/libvirt-exporter.service
 ```
@@ -270,7 +269,7 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 ```
-Reload systemd and Start Libvirt Exporter
+### Reload systemd and Start Libvirt Exporter
 ```
 systemctl daemon-reexec
 systemctl daemon-reload
@@ -278,16 +277,16 @@ systemctl start libvirt-exporter
 systemctl enable libvirt-exporter
 systemctl status libvirt-exporter
 ```
-Verify Libvirt Exporter is Running
+### Verify Libvirt Exporter is Running
 ```
 curl http://localhost:9177/metrics
 ```
-Clean Up
+### Clean Up
 ```
 cd ..
 rm -rf 2.3.3.tar.gz libvirt-exporter-2.3.3
 ```
-### note
+### note:-
 If service is not running properly try removing<br>
 
 User=prometheus<br>
@@ -295,12 +294,12 @@ Group=prometheus
 
 from etc/systemd/system/libvirt-exporter.service and restart the services
 
-Lists all running processes and systemd services
+### Lists all running processes and systemd services
 ```
 ps aux | grep exporter
 systemctl list-units --type=service | grep exporter
 ```
-Configure Libvirt endpoint - on Prometheus server
+### Configure Libvirt endpoint - on Prometheus server
 ```
 cd /etc/promethetus/
 vi prometheus.yml
@@ -314,14 +313,14 @@ scrape_configs:
   static_configs:
   - targets: ['<VM's-ip>:9100']
 ```
-Reload services
+### Reload services
 ```
 systemctl daemon-reload
 systemctl stop prometheus
 systemctl start prometheus
 systemctl status prometheus
 ```
-Check Prometheus web console
+### Check Prometheus web console
 
 > http://<prometheus-vm-ip\>:9090/targets
 
@@ -331,7 +330,7 @@ Check for your endpoint and status of it.
 
 Go to https://prometheus.io/download/ page now select Operating system and Architecture then copy the link address of (blackbox_exporter-xxxxxxxx.tar.gz) 
 
-Download and extract the Blackbox binary
+### Download and extract the Blackbox binary
 ```
 wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.27.0/blackbox_exporter-0.27.0.linux-amd64.tar.gz
 tar xvf blackbox_exporter-0.27.0.linux-amd64.tar.gz
@@ -339,7 +338,7 @@ cd blackbox_exporter-0.27.0.linux-amd64
 mv blackbox_exporter /usr/local/bin/
 chmod +x /usr/local/bin/blackbox_exporter
 ```
-Create Blackbox-exporter Systemd Service
+### Create Blackbox-exporter Systemd Service
 ```
 vi /etc/systemd/system/blackbox_exporter.service
 ```
@@ -359,7 +358,7 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 ```
-Configure Blackbox Exporter
+### Configure Blackbox Exporter
 ```
 cd /etc/prometheus/
 vi blackbox.yml
@@ -375,14 +374,14 @@ modules:
       valid_status_codes: []  # Defaults to 2xx
       method: GET
 ```
-Start and Enable the Service
+### Start and Enable the Service
 ```
 systemctl daemon-reload
 systemctl start blackbox
 systemctl enable blackbox
 systemctl status blackbox
 ```
-Configure Prometheus to Use Blackbox Exporter
+### Configure Prometheus to Use Blackbox Exporter
 ```
 vi /etc/prometheus/prometheus.yml
 ```
@@ -408,11 +407,11 @@ vi /etc/prometheus/prometheus.yml
 ```
 systemctl restart prometheus
 ```
-Verify the Setup
+### Verify the Setup
 ```
 curl http://<your_server_ip>:9115/metrics
 ```
-Check Prometheus web console
+### Check Prometheus web console
 
 > http://<prometheus-vm-ip\>:9090/targets
 
@@ -420,13 +419,13 @@ Check for your endpoint and status of it.
 
 # MySqld exporter Installation
 
-Add Prometheus system user and group
+### Add Prometheus system user and group
 ```
 groupadd --system prometheus
 useradd -s /sbin/nologin --system -g prometheus prometheus
 ``` 
 
-Download and install Prometheus mysqld_exporter
+### Download and install Prometheus mysqld_exporter
 
 Go to https://prometheus.io/download/ page now select Operating system and Architecture then copy the link address of (mysqld_exporter-xxxxxxx.tar.gz) 
 ```
@@ -437,8 +436,7 @@ mv mysqld_exporter /usr/local/bin/
 chmod +x /usr/local/bin/mysqld_exporter
 mysqld_exporter  --version
 ```
-
-Create Prometheus exporter database user
+### Create Prometheus exporter database user
 ```
 mysql -u root -p
 ```
@@ -454,7 +452,7 @@ If you have a Master-Slave database architecture, create user on the master serv
 WITH MAX_USER_CONNECTIONS 2 is used to set a max connection limit for the user to avoid overloading the server with monitoring scrapes under heavy load.
 Code language: PHP (php)
 
-Configure database credentials
+### Configure database credentials
 ```
 vi /etc/.mysqld_exporter.cnf
 ```
@@ -464,11 +462,11 @@ Add correct username and password for user create
 user=mysqld_exporter
 password=StrongPassword
 ```
-Set ownership permissions:
+### Set ownership permissions:
 ```
 chown root:prometheus /etc/.mysqld_exporter.cnf
 ```
-Create systemd unit file
+### Create systemd unit file
 ```
 vi /etc/systemd/system/mysql_exporter.service
 ```
@@ -505,18 +503,18 @@ ExecStart=/usr/local/bin/mysqld_exporter \
 [Install]
 WantedBy=multi-user.target
 ```
-Reload systemd and start mysql_exporter service
+### Reload systemd and start mysql_exporter service
 ```
 systemctl daemon-reload
 systemctl start mysql_exporter
 systemctl enable mysql_exporter
 systemctl status mysql_exporter
 ```
-Verify Mysql Exporter is Running
+### Verify Mysql Exporter is Running
 ```
 curl http://localhost:9104/metrics
 ```
-Configure MySQL endpoint - on Prometheus server
+### Configure MySQL endpoint - on Prometheus server
 ```
 vi /etc/prometheus/prometheus.yml
 ```
@@ -528,13 +526,13 @@ scrape_configs:
         labels:
           alias: test-db
 ```
-Reload systemd and Start prometheus
+### Reload systemd and Start prometheus
 ```
 systemctl daemon-reload
 systemctl restart prometheus
 systemctl status prometheus
 ```   
-Check Prometheus web console
+### Check Prometheus web console
 
 > http://<prometheus-vm-ip\>:9090/targets
 
